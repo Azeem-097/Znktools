@@ -2,7 +2,7 @@ import { Product, Review, FAQItem, SocialLink } from "@/types";
 
 // IMPORTANT: WhatsApp number must be in international format WITHOUT + sign or leading 0
 export const WHATSAPP_NUMBER = "923143111118";
-export const WHATSAPP_DISPLAY = "0314 311 1118";
+export const WHATSAPP_DISPLAY = "0314 3111118";
 export const WHATSAPP_COMMUNITY_LINK = "https://chat.whatsapp.com/YOUR_GROUP_INVITE_CODE";
 
 export const WHATSAPP_MESSAGE = (productName: string, plan: string) =>
@@ -15,7 +15,7 @@ export const SITE_CONFIG = {
   tagline: "Premium AI Tools at Unbeatable Prices",
   description:
     "Get instant access to ChatGPT Pro, Gemini Pro, Canva Pro & more premium AI tools at the lowest prices in Pakistan.",
-  phone: "0314 311 1118",
+  phone: "0314 3111118",
   email: "hello@znktools.com",
   address: "Lahore, Pakistan",
 };
