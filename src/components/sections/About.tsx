@@ -34,25 +34,28 @@ const features = [
 
 export default function About() {
   return (
-    <section id="about" className="relative py-24 sm:py-32">
+    <section id="about" className="relative py-16 sm:py-24 lg:py-32">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[150px] pointer-events-none" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           badge="Why Us"
           title="Why People Choose"
-          highlight="ToolsTemple"
+          highlight="ToolsTemplate"
           subtitle="We are not just another reseller. We are building the most trusted platform for premium AI tools in Pakistan."
         />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {features.map((feature, i) => (
             <AnimateOnScroll key={i} delay={i * 0.1}>
               <GlowCard className="h-full" glowColor={`${feature.color}20`}>
-                <div className="p-6 sm:p-8">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: `${feature.color}15` }}>
-                    <feature.icon className="w-6 h-6" style={{ color: feature.color }} />
+                <div className="p-5 sm:p-6 lg:p-8">
+                  <div
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-4 sm:mb-5"
+                    style={{ backgroundColor: `${feature.color}15` }}
+                  >
+                    <feature.icon className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: feature.color }} />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{feature.title}</h3>
-                  <p className="text-sm text-gray-400 leading-relaxed">{feature.description}</p>
+                  <h3 className="text-base sm:text-lg font-bold text-white mb-2">{feature.title}</h3>
+                  <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">{feature.description}</p>
                 </div>
               </GlowCard>
             </AnimateOnScroll>
