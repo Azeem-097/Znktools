@@ -1,9 +1,9 @@
-﻿import { Metadata } from "next";
+import { Metadata } from "next";
 import { RefreshCw, CheckCircle, XCircle, Clock, MessageCircle, AlertCircle, CreditCard } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Refund Policy — ToolsTemplate",
+  title: "Refund Policy — ZNK Tools",
   description: "Understand our refund and replacement policies for premium AI tool subscriptions.",
 };
 
@@ -182,7 +182,7 @@ export default function RefundPolicyPage() {
             Our support team is available 24/7 on WhatsApp.
           </p>
           <a
-            href={`https://wa.me/923039045075`}
+            href={`https://wa.me/923143111118`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold transition-colors"

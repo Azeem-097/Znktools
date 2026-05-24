@@ -1,10 +1,10 @@
-﻿import { Metadata } from "next";
+import { Metadata } from "next";
 import { FileText, ShieldCheck, AlertTriangle, Clock, RefreshCw, Ban, Scale, MessageCircle } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — ToolsTemplate",
-  description: "Read the terms and conditions governing the use of ToolsTemplate services.",
+  title: "Terms of Service — ZNK Tools",
+  description: "Read the terms and conditions governing the use of ZNK Tools services.",
 };
 
 const sections = [
@@ -153,7 +153,7 @@ export default function TermsPage() {
             We are happy to discuss any questions about our terms.
           </p>
           <a
-            href={`https://wa.me/923039045075`}
+            href={`https://wa.me/923143111118`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold transition-colors"

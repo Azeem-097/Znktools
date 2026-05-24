@@ -1,0 +1,827 @@
+
+====================================================================================================
+FILE: globals.css
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\app\globals.css
+====================================================================================================
+@import "tailwindcss";
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    scrollbar-width: thin;
+    scrollbar-color: #3b3b4f #0a0a0f;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+====================================================================================================
+FILE: layout.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\app\layout.tsx
+====================================================================================================
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+export const metadata: Metadata = {
+  title: "ToolsTemple — Premium AI Tools at Unbeatable Prices",
+  description:
+    "Get instant access to ChatGPT Pro, Gemini Pro, Canva Pro & more premium AI tools at the lowest prices in Pakistan. Instant WhatsApp delivery.",
+  keywords: [
+    "ChatGPT Pro",
+    "Canva Pro",
+    "Gemini Pro",
+    "AI tools Pakistan",
+    "cheap AI subscriptions",
+  ],
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" className="dark">
+      <body
+        className={`${inter.variable} font-sans antialiased bg-[#050508] text-white overflow-x-hidden`}
+      >
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
+        <WhatsAppFloat />
+      </body>
+    </html>
+  );
+}
+
+
+====================================================================================================
+FILE: page.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\app\page.tsx
+====================================================================================================
+import Hero from "@/components/sections/Hero";
+import FeaturedProducts from "@/components/sections/FeaturedProducts";
+import About from "@/components/sections/About";
+import Reviews from "@/components/sections/Reviews";
+import FAQ from "@/components/sections/FAQ";
+import Contact from "@/components/sections/Contact";
+
+export default function Home() {
+  return (
+    <>
+      <Hero />
+      <FeaturedProducts />
+      <About />
+      <Reviews />
+      <FAQ />
+      <Contact />
+    </>
+  );
+}
+
+
+====================================================================================================
+FILE: privacy-policy\page.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\app\privacy-policy\page.tsx
+====================================================================================================
+import { Metadata } from "next";
+import { Shield, Lock, Eye, Mail, FileText, Users } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy — ToolsTemplate",
+  description: "Learn how ToolsTemplate collects, uses, and protects your personal information.",
+};
+
+const sections = [
+  {
+    icon: FileText,
+    title: "Information We Collect",
+    content: [
+      "When you contact us via WhatsApp or use our website, we may collect the following information:",
+      "• Personal Details: Name, phone number, email address",
+      "• Payment Information: Necessary to process your orders (we do not store card details)",
+      "• Communication Records: WhatsApp messages, support tickets, order history",
+      "• Technical Data: IP address, browser type, device information (collected automatically via standard web analytics)",
+    ],
+  },
+  {
+    icon: Users,
+    title: "How We Use Your Information",
+    content: [
+      "Your information is used exclusively for the following purposes:",
+      "• Processing and fulfilling your orders",
+      "• Delivering purchased products and credentials",
+      "• Providing customer support and responding to inquiries",
+      "• Sending order confirmations and important service updates",
+      "• Improving our services and user experience",
+      "• Preventing fraud and ensuring platform security",
+      "We DO NOT sell, rent, or share your personal data with third parties for marketing purposes.",
+    ],
+  },
+  {
+    icon: Lock,
+    title: "Data Security",
+    content: [
+      "We take the security of your personal information seriously:",
+      "• All WhatsApp communications are end-to-end encrypted",
+      "• Payment information is processed through secure channels",
+      "• We do not store credit/debit card information on our servers",
+      "• Access to customer data is restricted to authorized personnel only",
+      "• Regular security audits are conducted to identify and address vulnerabilities",
+    ],
+  },
+  {
+    icon: Eye,
+    title: "Your Rights",
+    content: [
+      "As a user, you have the following rights regarding your data:",
+      "• Access: Request a copy of the personal data we hold about you",
+      "• Correction: Request correction of inaccurate or incomplete data",
+      "• Deletion: Request deletion of your personal data (subject to legal obligations)",
+      "• Opt-out: Unsubscribe from promotional messages at any time",
+      "• Portability: Request transfer of your data in a structured format",
+      "To exercise any of these rights, contact us using the details below.",
+    ],
+  },
+  {
+    icon: Shield,
+    title: "Third-Party Services",
+    content: [
+      "We may use third-party services for the following purposes:",
+      "• Payment processing (JazzCash, EasyPaisa, banking partners)",
+      "• Communication (WhatsApp Business API)",
+      "• Website hosting and analytics",
+      "These third parties have their own privacy policies. We recommend reviewing them. We are not responsible for the privacy practices of external services.",
+    ],
+  },
+  {
+    icon: Mail,
+    title: "Cookies & Tracking",
+    content: [
+      "Our website uses minimal cookies to enhance your experience:",
+      "• Essential cookies for website functionality",
+      "• Analytics cookies to understand how visitors use our site",
+      "You can disable cookies in your browser settings, but this may affect website functionality.",
+    ],
+  },
+];
+
+export default function PrivacyPolicyPage() {
+  return (
+    <section className="min-h-screen pt-28 pb-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
+            Legal
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+            Privacy{" "}
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Policy
+            </span>
+          </h1>
+          <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Your privacy matters to us. This policy explains what data we collect, how we use it, and the rights you have.
+          </p>
+          <p className="text-sm text-gray-600 mt-4">Last updated: January 2025</p>
+        </div>
+
+        {/* Intro card */}
+        <div className="p-6 rounded-2xl bg-indigo-500/[0.04] border border-indigo-500/20 mb-12">
+          <p className="text-gray-300 leading-relaxed text-sm">
+            At <span className="text-white font-semibold">{SITE_CONFIG.name}</span>, we are committed to protecting your privacy and ensuring your personal information is handled with the highest standards of security and transparency. By using our services, you agree to the terms outlined in this Privacy Policy.
+          </p>
+        </div>
+
+        {/* Sections */}
+        <div className="space-y-8">
+          {sections.map((section, i) => (
+            <div
+              key={i}
+              className="p-6 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06]"
+            >
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-11 h-11 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0">
+                  <section.icon className="w-5 h-5 text-indigo-400" />
+                </div>
+                <h2 className="text-xl font-bold text-white">{section.title}</h2>
+              </div>
+              <div className="space-y-2 text-sm text-gray-300 leading-relaxed pl-15">
+                {section.content.map((line, j) => (
+                  <p key={j} className={line.startsWith("•") ? "pl-4" : ""}>{line}</p>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Contact CTA */}
+        <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 text-center">
+          <h3 className="text-xl font-bold text-white mb-2">Questions about your privacy?</h3>
+          <p className="text-gray-400 text-sm mb-4">
+            We are here to help. Reach out anytime.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
+            <a href={`mailto:${SITE_CONFIG.email}`} className="text-indigo-400 hover:text-indigo-300 transition-colors">
+              {SITE_CONFIG.email}
+            </a>
+            <span className="text-gray-700">•</span>
+            <a href={`https://wa.me/923039045075`} className="text-emerald-400 hover:text-emerald-300 transition-colors">
+              WhatsApp: {SITE_CONFIG.phone}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+====================================================================================================
+FILE: products\page.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\app\products\page.tsx
+====================================================================================================
+import { Metadata } from "next";
+import Link from "next/link";
+import { MessageCircle, ArrowRight, Shield, Zap, RefreshCw, Users } from "lucide-react";
+import ProductGrid from "@/components/product/ProductGrid";
+import SectionHeading from "@/components/ui/SectionHeading";
+import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
+import { WHATSAPP_NUMBER, SITE_CONFIG } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "All Products — ToolsTemplate",
+  description: "Browse our complete collection of premium AI tools at unbeatable prices.",
+};
+
+const benefits = [
+  { icon: Zap, title: "Instant Delivery", desc: "Receive your tools within 5-30 minutes via WhatsApp.", color: "#f59e0b" },
+  { icon: Shield, title: "100% Genuine", desc: "All accounts are authentic and verified. No fakes ever.", color: "#10b981" },
+  { icon: RefreshCw, title: "Replacement Promise", desc: "If anything goes wrong, we replace it within 24 hours.", color: "#6366f1" },
+  { icon: Users, title: "5,000+ Customers", desc: "Trusted by thousands of professionals across Pakistan.", color: "#ec4899" },
+];
+
+export default function ProductsPage() {
+  return (
+    <>
+      {/* Products Grid */}
+      <section className="min-h-screen pt-24 sm:pt-28 pb-16 sm:pb-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeading
+            badge="All Products"
+            title="Our Complete"
+            highlight="Collection"
+            subtitle="Browse all premium AI tools available at ToolsTemplate. Pick your tool, choose a plan, and order via WhatsApp."
+          />
+          <ProductGrid />
+        </div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section className="relative py-16 sm:py-20 border-t border-white/[0.04]">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimateOnScroll className="text-center mb-10 sm:mb-12">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">
+              Why Choose Us
+            </span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
+              Pakistan's Most{" "}
+              <span className="bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">
+                Trusted
+              </span>{" "}
+              AI Tools Provider
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">
+              Join thousands of happy customers who chose us for premium AI tools at unbeatable prices.
+            </p>
+          </AnimateOnScroll>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+            {benefits.map((benefit, i) => (
+              <AnimateOnScroll key={i} delay={i * 0.1}>
+                <div
+                  className="p-4 sm:p-6 rounded-2xl border h-full transition-all hover:-translate-y-1"
+                  style={{
+                    background: `linear-gradient(145deg, ${benefit.color}10 0%, rgba(255,255,255,0.02) 100%)`,
+                    borderColor: `${benefit.color}25`,
+                  }}
+                >
+                  <div
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-3 sm:mb-4"
+                    style={{
+                      backgroundColor: `${benefit.color}20`,
+                      border: `1px solid ${benefit.color}30`,
+                    }}
+                  >
+                    <benefit.icon className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: benefit.color }} />
+                  </div>
+                  <h3 className="text-sm sm:text-base font-bold text-white mb-1.5 sm:mb-2">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-[11px] sm:text-sm text-gray-400 leading-relaxed">
+                    {benefit.desc}
+                  </p>
+                </div>
+              </AnimateOnScroll>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="relative py-16 sm:py-20 border-t border-white/[0.04]">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-600/10 rounded-full blur-[150px]" />
+        </div>
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimateOnScroll>
+            <div className="relative rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/[0.08] to-green-500/[0.05] p-6 sm:p-10 lg:p-14 text-center overflow-hidden">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-40 h-40 bg-green-500/10 rounded-full blur-3xl" />
+
+              <div className="relative">
+                <span className="inline-block px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-semibold tracking-wider uppercase bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 mb-4 sm:mb-6">
+                  Not sure what to pick?
+                </span>
+
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3 sm:mb-4 leading-tight">
+                  Let us help you{" "}
+                  <span className="bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">
+                    choose the perfect tool
+                  </span>
+                </h2>
+
+                <p className="text-sm sm:text-base text-gray-400 max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed">
+                  Tell us your needs on WhatsApp and we will recommend the best AI tool and plan for your budget. Free consultation, no obligation.
+                </p>
+
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6">
+                  <a
+                    href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hey! I need help choosing the right AI tool. Can you guide me?")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-sm sm:text-base shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 overflow-hidden"
+                  >
+                    <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full" style={{ animation: "shimmer 3s infinite" }} />
+                    </div>
+                    <MessageCircle className="relative w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="relative">Get Free Advice</span>
+                    <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </a>
+
+                  <Link
+                    href="/#faq"
+                    className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-white/[0.04] border border-white/[0.08] text-white font-semibold text-sm sm:text-base hover:bg-white/[0.08] transition-all duration-200"
+                  >
+                    Read FAQs
+                  </Link>
+                </div>
+
+                <p className="text-[11px] sm:text-xs text-gray-500">
+                  📞 {SITE_CONFIG.phone} • ⚡ Replies within minutes
+                </p>
+              </div>
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </section>
+    </>
+  );
+}
+
+
+====================================================================================================
+FILE: products\[slug]\page.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\app\products\[slug]\page.tsx
+====================================================================================================
+[Could not read file: D:\Web Development\Websites\Clients\toolstemplate\src\app\products\[slug]\page.tsx]
+
+
+====================================================================================================
+FILE: refund-policy\page.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\app\refund-policy\page.tsx
+====================================================================================================
+import { Metadata } from "next";
+import { RefreshCw, CheckCircle, XCircle, Clock, MessageCircle, AlertCircle, CreditCard } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "Refund Policy — ToolsTemplate",
+  description: "Understand our refund and replacement policies for premium AI tool subscriptions.",
+};
+
+export default function RefundPolicyPage() {
+  return (
+    <section className="min-h-screen pt-28 pb-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
+            Legal
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+            Refund{" "}
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Policy
+            </span>
+          </h1>
+          <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Our refund and replacement guidelines designed to ensure your satisfaction and protect your investment.
+          </p>
+          <p className="text-sm text-gray-600 mt-4">Last updated: January 2025</p>
+        </div>
+
+        {/* Quick visual breakdown */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+          <div className="p-6 rounded-2xl bg-emerald-500/[0.05] border border-emerald-500/20 text-center">
+            <CheckCircle className="w-8 h-8 text-emerald-400 mx-auto mb-3" />
+            <h3 className="text-white font-bold mb-1">Replacement First</h3>
+            <p className="text-xs text-gray-400">Issues fixed within 24 hours</p>
+          </div>
+          <div className="p-6 rounded-2xl bg-amber-500/[0.05] border border-amber-500/20 text-center">
+            <Clock className="w-8 h-8 text-amber-400 mx-auto mb-3" />
+            <h3 className="text-white font-bold mb-1">24-Hour Window</h3>
+            <p className="text-xs text-gray-400">Refund requests within 24 hours</p>
+          </div>
+          <div className="p-6 rounded-2xl bg-indigo-500/[0.05] border border-indigo-500/20 text-center">
+            <MessageCircle className="w-8 h-8 text-indigo-400 mx-auto mb-3" />
+            <h3 className="text-white font-bold mb-1">Fast Response</h3>
+            <p className="text-xs text-gray-400">Reply within 12 hours</p>
+          </div>
+        </div>
+
+        {/* Eligible for refund */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-emerald-500/[0.03] border border-emerald-500/20 mb-6">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+              <CheckCircle className="w-5 h-5 text-emerald-400" />
+            </div>
+            <h2 className="text-xl font-bold text-white">When You ARE Eligible for a Refund</h2>
+          </div>
+          <ul className="space-y-3 text-sm text-gray-300">
+            <li className="flex items-start gap-3">
+              <span className="text-emerald-400 mt-1">✓</span>
+              <span>We are unable to deliver your product within 24 hours of payment confirmation</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-emerald-400 mt-1">✓</span>
+              <span>The product delivered does not match what was advertised</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-emerald-400 mt-1">✓</span>
+              <span>We are unable to provide a working replacement within 48 hours of reporting an issue</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-emerald-400 mt-1">✓</span>
+              <span>Technical issues from our end prevent you from using the service</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* NOT eligible */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-red-500/[0.03] border border-red-500/20 mb-6">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-11 h-11 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+              <XCircle className="w-5 h-5 text-red-400" />
+            </div>
+            <h2 className="text-xl font-bold text-white">When You are NOT Eligible for a Refund</h2>
+          </div>
+          <ul className="space-y-3 text-sm text-gray-300">
+            <li className="flex items-start gap-3">
+              <span className="text-red-400 mt-1">✗</span>
+              <span>Credentials have been delivered and account is active and working</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-red-400 mt-1">✗</span>
+              <span>You changed your mind after receiving the product</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-red-400 mt-1">✗</span>
+              <span>The issue was caused by your actions (changing passwords, sharing credentials, violating ToS)</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-red-400 mt-1">✗</span>
+              <span>You did not allow us to provide a replacement first</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-red-400 mt-1">✗</span>
+              <span>The plan has expired naturally after the purchased duration</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* How to request */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] mb-6">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-11 h-11 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
+              <RefreshCw className="w-5 h-5 text-indigo-400" />
+            </div>
+            <h2 className="text-xl font-bold text-white">How to Request a Refund or Replacement</h2>
+          </div>
+          <ol className="space-y-4 text-sm text-gray-300">
+            <li className="flex gap-4">
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-400 font-bold text-xs shrink-0">1</span>
+              <div>
+                <p className="text-white font-semibold mb-1">Contact Us on WhatsApp</p>
+                <p>Message us at <span className="text-indigo-400">{SITE_CONFIG.phone}</span> with your order details and a clear description of the issue.</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-400 font-bold text-xs shrink-0">2</span>
+              <div>
+                <p className="text-white font-semibold mb-1">Provide Order Information</p>
+                <p>Include: Order date, product name, plan duration, and screenshots if applicable.</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-400 font-bold text-xs shrink-0">3</span>
+              <div>
+                <p className="text-white font-semibold mb-1">Replacement Attempt</p>
+                <p>We will first attempt to provide a working replacement within 12-24 hours.</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-400 font-bold text-xs shrink-0">4</span>
+              <div>
+                <p className="text-white font-semibold mb-1">Refund Processing</p>
+                <p>If replacement is not possible, refund will be processed within 3-5 business days to your original payment method.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        {/* Refund methods */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] mb-6">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-11 h-11 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
+              <CreditCard className="w-5 h-5 text-indigo-400" />
+            </div>
+            <h2 className="text-xl font-bold text-white">Refund Methods</h2>
+          </div>
+          <p className="text-sm text-gray-300 mb-4">Refunds are issued through the same payment method used for the original purchase:</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {["JazzCash", "EasyPaisa", "Bank Transfer", "SadaPay", "NayaPay", "Other"].map((method) => (
+              <div key={method} className="p-3 rounded-lg bg-white/[0.03] border border-white/[0.06] text-center text-xs font-medium text-gray-300">
+                {method}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Important note */}
+        <div className="p-6 rounded-2xl bg-amber-500/[0.04] border border-amber-500/20 mb-12 flex gap-4">
+          <AlertCircle className="w-6 h-6 text-amber-400 shrink-0 mt-0.5" />
+          <div>
+            <h3 className="text-white font-semibold mb-1">Important Note</h3>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              We prioritize replacements over refunds because our goal is to ensure you get the service you paid for. Most issues can be resolved with a quick replacement. Please give us a chance to fix any problems before requesting a refund.
+            </p>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-green-500/10 border border-emerald-500/20 text-center">
+          <h3 className="text-xl font-bold text-white mb-2">Need help with a refund?</h3>
+          <p className="text-gray-400 text-sm mb-4">
+            Our support team is available 24/7 on WhatsApp.
+          </p>
+          <a
+            href={`https://wa.me/923039045075`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold transition-colors"
+          >
+            <MessageCircle className="w-4 h-4" />
+            Contact Support
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+====================================================================================================
+FILE: terms\page.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\app\terms\page.tsx
+====================================================================================================
+import { Metadata } from "next";
+import { FileText, ShieldCheck, AlertTriangle, Clock, RefreshCw, Ban, Scale, MessageCircle } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "Terms of Service — ToolsTemplate",
+  description: "Read the terms and conditions governing the use of ToolsTemplate services.",
+};
+
+const sections = [
+  {
+    icon: FileText,
+    title: "1. Service Description",
+    content: [
+      `${SITE_CONFIG.name} provides access to premium AI tool subscriptions including but not limited to ChatGPT Pro, ChatGPT Plus, Google Gemini Advanced, Canva Pro, Midjourney, and other AI services.`,
+      "We act as an authorized reseller and offer both shared and individual access plans at discounted prices compared to direct retail.",
+      "All subscriptions are delivered via WhatsApp after successful payment confirmation.",
+    ],
+  },
+  {
+    icon: ShieldCheck,
+    title: "2. Account Usage",
+    content: [
+      "By purchasing a subscription, you agree to the following:",
+      "• Accounts are for personal use only and may not be shared with others (unless purchasing a shared plan)",
+      "• Reselling, redistributing, or transferring credentials to third parties is strictly prohibited",
+      "• Using accounts for illegal activities, spam, abuse, or any activity that violates the original platform's Terms of Service is forbidden",
+      "• Changing passwords or modifying account settings on shared accounts is not allowed",
+      "Violation of these terms will result in immediate account termination without refund.",
+    ],
+  },
+  {
+    icon: Clock,
+    title: "3. Delivery & Activation",
+    content: [
+      "We aim to deliver all orders within 5-30 minutes after payment confirmation via WhatsApp.",
+      "In rare cases involving high demand or technical issues, delivery may take up to 24 hours.",
+      "If we are unable to fulfill your order within 24 hours, you are entitled to a full refund.",
+      "Subscription duration starts from the moment credentials are delivered, not from the moment of payment.",
+    ],
+  },
+  {
+    icon: RefreshCw,
+    title: "4. Replacement Policy",
+    content: [
+      "We provide a replacement guarantee for the entire duration of your purchased plan.",
+      "If your account stops working, gets logged out, or faces any technical issues:",
+      "• Contact us immediately on WhatsApp with your order details",
+      "• We will provide a replacement within 12-24 hours",
+      "• In some cases, immediate replacement is available",
+      "The replacement guarantee does NOT cover issues caused by user actions such as password changes, sharing with unauthorized users, or violating platform rules.",
+    ],
+  },
+  {
+    icon: AlertTriangle,
+    title: "5. Limitations of Liability",
+    content: [
+      `${SITE_CONFIG.name} is not affiliated with, endorsed by, or officially associated with OpenAI, Google, Canva, Midjourney, or any other AI service provider.`,
+      "We are a third-party reseller providing access to these services.",
+      "We are not liable for:",
+      "• Service interruptions caused by the original platform",
+      "• Changes in features or pricing made by the original platform",
+      "• Data loss or content created using these tools",
+      "• Indirect, consequential, or incidental damages",
+      "Your sole remedy in case of issues is replacement or refund as per our policies.",
+    ],
+  },
+  {
+    icon: Ban,
+    title: "6. Prohibited Activities",
+    content: [
+      "You agree NOT to use our services for:",
+      "• Creating illegal content, deepfakes, or harmful material",
+      "• Generating content that violates copyright or intellectual property rights",
+      "• Spam, harassment, hate speech, or any form of abuse",
+      "• Attempting to reverse-engineer or extract proprietary information",
+      "• Reselling our accounts to third parties without authorization",
+      "We reserve the right to terminate accounts engaged in such activities without refund.",
+    ],
+  },
+  {
+    icon: Scale,
+    title: "7. Modifications & Termination",
+    content: [
+      "We reserve the right to modify these Terms of Service at any time. Changes will be effective immediately upon posting on our website.",
+      "Continued use of our services after changes constitutes acceptance of the new terms.",
+      "We may suspend or terminate your access to our services at our discretion in cases of policy violations, fraud, or non-payment.",
+    ],
+  },
+  {
+    icon: MessageCircle,
+    title: "8. Contact & Support",
+    content: [
+      "For any questions, concerns, or support related to these terms:",
+      `• Email: ${SITE_CONFIG.email}`,
+      `• WhatsApp: ${SITE_CONFIG.phone}`,
+      `• Address: ${SITE_CONFIG.address}`,
+      "We are available 24/7 on WhatsApp for urgent matters.",
+    ],
+  },
+];
+
+export default function TermsPage() {
+  return (
+    <section className="min-h-screen pt-28 pb-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
+            Legal
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+            Terms of{" "}
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Service
+            </span>
+          </h1>
+          <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Please read these terms carefully before using our services. By making a purchase, you agree to be bound by these terms.
+          </p>
+          <p className="text-sm text-gray-600 mt-4">Last updated: January 2025</p>
+        </div>
+
+        <div className="p-6 rounded-2xl bg-amber-500/[0.04] border border-amber-500/20 mb-12">
+          <p className="text-gray-300 leading-relaxed text-sm">
+            <span className="text-amber-400 font-semibold">⚠ Important:</span> By using {SITE_CONFIG.name} services, you acknowledge that you have read, understood, and agree to these Terms of Service. These terms form a binding agreement between you and {SITE_CONFIG.name}.
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          {sections.map((section, i) => (
+            <div
+              key={i}
+              className="p-6 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06]"
+            >
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-11 h-11 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0">
+                  <section.icon className="w-5 h-5 text-indigo-400" />
+                </div>
+                <h2 className="text-xl font-bold text-white">{section.title}</h2>
+              </div>
+              <div className="space-y-2 text-sm text-gray-300 leading-relaxed">
+                {section.content.map((line, j) => (
+                  <p key={j} className={line.startsWith("•") ? "pl-4" : ""}>{line}</p>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 text-center">
+          <h3 className="text-xl font-bold text-white mb-2">Need clarification?</h3>
+          <p className="text-gray-400 text-sm mb-4">
+            We are happy to discuss any questions about our terms.
+          </p>
+          <a
+            href={`https://wa.me/923039045075`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold transition-colors"
+          >
+            <MessageCircle className="w-4 h-4" />
+            Chat with us on WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+

@@ -1,10 +1,10 @@
-﻿import { Metadata } from "next";
+import { Metadata } from "next";
 import { Shield, Lock, Eye, Mail, FileText, Users } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — ToolsTemplate",
-  description: "Learn how ToolsTemplate collects, uses, and protects your personal information.",
+  title: "Privacy Policy — ZNK Tools",
+  description: "Learn how ZNK Tools collects, uses, and protects your personal information.",
 };
 
 const sections = [
@@ -142,7 +142,7 @@ export default function PrivacyPolicyPage() {
               {SITE_CONFIG.email}
             </a>
             <span className="text-gray-700">•</span>
-            <a href={`https://wa.me/923039045075`} className="text-emerald-400 hover:text-emerald-300 transition-colors">
+            <a href={`https://wa.me/923143111118`} className="text-emerald-400 hover:text-emerald-300 transition-colors">
               WhatsApp: {SITE_CONFIG.phone}
             </a>
           </div>

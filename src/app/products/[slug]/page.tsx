@@ -1,4 +1,4 @@
-﻿import { Metadata } from "next";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { products } from "@/lib/data";
 import ProductDetail from "@/components/product/ProductDetail";
@@ -14,8 +14,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = products.find((p) => p.slug === slug);
-  if (!product) return { title: "Product Not Found — ToolsTemple" };
-  return { title: `${product.name} — ToolsTemple`, description: product.description };
+  if (!product) return { title: "Product Not Found — ZNK Tools" };
+  return { title: `${product.name} — ZNK Tools`, description: product.description };
 }
 
 export default async function ProductPage({ params }: PageProps) {

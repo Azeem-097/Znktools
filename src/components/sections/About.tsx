@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { CheckCircle, MessageCircle, Package, Globe } from "lucide-react";
 import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
@@ -40,7 +40,7 @@ export default function About() {
         <SectionHeading
           badge="Why Us"
           title="Why People Choose"
-          highlight="ToolsTemplate"
+          highlight="ZNK Tools"
           subtitle="We are not just another reseller. We are building the most trusted platform for premium AI tools in Pakistan."
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">

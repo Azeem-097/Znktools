@@ -1,4 +1,4 @@
-﻿import { Metadata } from "next";
+import { Metadata } from "next";
 import Link from "next/link";
 import { MessageCircle, ArrowRight, Shield, Zap, RefreshCw, Users } from "lucide-react";
 import ProductGrid from "@/components/product/ProductGrid";
@@ -7,7 +7,7 @@ import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
 import { WHATSAPP_NUMBER, SITE_CONFIG } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "All Products — ToolsTemplate",
+  title: "All Products — ZNK Tools",
   description: "Browse our complete collection of premium AI tools at unbeatable prices.",
 };
 
@@ -28,7 +28,7 @@ export default function ProductsPage() {
             badge="All Products"
             title="Our Complete"
             highlight="Collection"
-            subtitle="Browse all premium AI tools available at ToolsTemplate. Pick your tool, choose a plan, and order via WhatsApp."
+            subtitle="Browse all premium AI tools available at ZNK Tools. Pick your tool, choose a plan, and order via WhatsApp."
           />
           <ProductGrid />
         </div>

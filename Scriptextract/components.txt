@@ -1,0 +1,1745 @@
+
+====================================================================================================
+FILE: layout\Footer.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\layout\Footer.tsx
+====================================================================================================
+"use client";
+
+import Link from "next/link";
+import { Mail, Phone, MapPin } from "lucide-react";
+import { SITE_CONFIG, socialLinks, products, featuredProductSlugs } from "@/lib/data";
+import Logo from "@/components/ui/Logo";
+
+export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  const topProducts = featuredProductSlugs
+    .map((slug) => products.find((p) => p.slug === slug))
+    .filter(Boolean)
+    .slice(0, 3);
+
+  return (
+    <footer className="relative bg-[#030306] border-t border-white/[0.04]">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-8">
+        {/* Brand section — always full width on top */}
+        <div className="mb-10 sm:mb-12 max-w-md">
+          <Link href="/" className="inline-block mb-4">
+            <Logo size={32} />
+          </Link>
+          <p className="text-gray-500 text-sm leading-relaxed mb-5">
+            {SITE_CONFIG.description}
+          </p>
+          <div className="flex gap-3">
+            {socialLinks.map((social) => (
+              <a
+                key={social.name}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-gray-500 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.12] transition-all"
+                aria-label={social.name}
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d={social.svgPath} />
+                </svg>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Links grid — 3 columns on ALL screens (mobile, tablet, desktop) */}
+        <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-10 sm:mb-12">
+          {/* Top Products */}
+          <div>
+            <h4 className="text-[11px] sm:text-sm font-semibold text-white uppercase tracking-wider mb-3 sm:mb-4">
+              Top Products
+            </h4>
+            <ul className="space-y-2 sm:space-y-2.5">
+              {topProducts.map((product) =>
+                product ? (
+                  <li key={product.slug}>
+                    <Link
+                      href={`/products/${product.slug}`}
+                      className="text-xs sm:text-sm text-gray-500 hover:text-indigo-400 transition-colors block"
+                    >
+                      {product.name}
+                    </Link>
+                  </li>
+                ) : null
+              )}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h4 className="text-[11px] sm:text-sm font-semibold text-white uppercase tracking-wider mb-3 sm:mb-4">
+              Legal
+            </h4>
+            <ul className="space-y-2 sm:space-y-2.5">
+              <li>
+                <Link href="/privacy-policy" className="text-xs sm:text-sm text-gray-500 hover:text-indigo-400 transition-colors block">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="text-xs sm:text-sm text-gray-500 hover:text-indigo-400 transition-colors block">
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link href="/refund-policy" className="text-xs sm:text-sm text-gray-500 hover:text-indigo-400 transition-colors block">
+                  Refund Policy
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="text-[11px] sm:text-sm font-semibold text-white uppercase tracking-wider mb-3 sm:mb-4">
+              Contact
+            </h4>
+            <ul className="space-y-2.5 sm:space-y-3">
+              <li className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm text-gray-500">
+                <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400 shrink-0 mt-0.5" />
+                <span className="break-all">{SITE_CONFIG.phone}</span>
+              </li>
+              <li className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm text-gray-500">
+                <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400 shrink-0 mt-0.5" />
+                <span className="break-all">{SITE_CONFIG.email}</span>
+              </li>
+              <li className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm text-gray-500">
+                <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400 shrink-0 mt-0.5" />
+                <span>{SITE_CONFIG.address}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="pt-6 sm:pt-8 border-t border-white/[0.04] text-center">
+          <p className="text-[11px] sm:text-xs text-gray-600">
+            © {currentYear} {SITE_CONFIG.name}. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+
+====================================================================================================
+FILE: layout\Navbar.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\layout\Navbar.tsx
+====================================================================================================
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Menu, X, MessageCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { WHATSAPP_NUMBER } from "@/lib/data";
+import Logo from "@/components/ui/Logo";
+
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/products", label: "Products" },
+  { href: "/#about", label: "About" },
+  { href: "/#reviews", label: "Reviews" },
+  { href: "/#faq", label: "FAQ" },
+  { href: "/#contact", label: "Contact" },
+];
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? "bg-[#050508]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-2xl shadow-black/20"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
+          <Link href="/">
+            <Logo size={36} />
+          </Link>
+
+          <div className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white rounded-lg hover:bg-white/[0.04] transition-all duration-200"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="hidden lg:flex items-center gap-3">
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white text-sm font-semibold shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+            >
+              <MessageCircle className="w-4 h-4" />
+              WhatsApp Us
+            </a>
+          </div>
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="lg:hidden p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+          >
+            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="lg:hidden bg-[#0a0a12]/98 backdrop-blur-xl border-b border-white/[0.06] overflow-hidden"
+          >
+            <div className="px-4 py-4 space-y-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="block px-4 py-3 text-sm font-medium text-gray-400 hover:text-white rounded-xl hover:bg-white/[0.04] transition-all"
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 mt-3 px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white text-sm font-semibold"
+              >
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp Us
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+}
+
+
+====================================================================================================
+FILE: layout\WhatsAppFloat.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\layout\WhatsAppFloat.tsx
+====================================================================================================
+"use client";
+
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Users, MessageCircle } from "lucide-react";
+import { WHATSAPP_NUMBER, WHATSAPP_COMMUNITY_LINK } from "@/lib/data";
+
+export default function WhatsAppFloat() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [pulse, setPulse] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), 1500);
+    // Stop pulsing after 8 seconds
+    const pulseTimer = setTimeout(() => setPulse(false), 8000);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(pulseTimer);
+    };
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+      {/* Action Buttons (revealed when open) */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* WhatsApp Direct Chat */}
+            <motion.a
+              key="chat"
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hey! I want to know more about your AI tools.")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, scale: 0.5, x: 20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.5, x: 20 }}
+              transition={{ duration: 0.25, delay: 0.05 }}
+              className="group flex items-center gap-3"
+            >
+              <span className="bg-white text-gray-900 text-sm font-semibold px-4 py-2 rounded-xl shadow-xl whitespace-nowrap">
+                Direct Chat
+              </span>
+              <div className="w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg shadow-green-500/30 hover:scale-110 transition-transform">
+                <MessageCircle className="w-5 h-5 text-white" />
+              </div>
+            </motion.a>
+
+            {/* Community Group */}
+            <motion.a
+              key="community"
+              href={WHATSAPP_COMMUNITY_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, scale: 0.5, x: 20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.5, x: 20 }}
+              transition={{ duration: 0.25 }}
+              className="group flex items-center gap-3"
+            >
+              <span className="bg-white text-gray-900 text-sm font-semibold px-4 py-2 rounded-xl shadow-xl whitespace-nowrap flex items-center gap-2">
+                Join Community
+                <span className="px-1.5 py-0.5 rounded-md bg-emerald-500 text-white text-[9px] font-bold uppercase">
+                  Free
+                </span>
+              </span>
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 hover:scale-110 transition-transform">
+                <Users className="w-5 h-5 text-white" />
+              </div>
+            </motion.a>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Main FAB Button */}
+      <motion.button
+        onClick={() => setIsOpen(!isOpen)}
+        initial={{ scale: 0, rotate: -180 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: "spring", stiffness: 200, damping: 15 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="relative w-16 h-16 rounded-full bg-[#25D366] flex items-center justify-center shadow-2xl shadow-green-500/40 group"
+      >
+        {/* Pulse rings (animated) */}
+        {pulse && !isOpen && (
+          <>
+            <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30" />
+            <span
+              className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20"
+              style={{ animationDelay: "0.5s" }}
+            />
+          </>
+        )}
+
+        {/* Rotating glow ring */}
+        <div
+          className="absolute -inset-1 rounded-full opacity-50 blur-md"
+          style={{
+            background:
+              "conic-gradient(from 0deg, #25D366, #34d399, #25D366, #10b981, #25D366)",
+            animation: "spin 4s linear infinite",
+          }}
+        />
+
+        {/* Icon (rotates when toggled) */}
+        <motion.div
+          animate={{ rotate: isOpen ? 135 : 0 }}
+          transition={{ duration: 0.3 }}
+          className="relative z-10"
+        >
+          {isOpen ? (
+            <X className="w-7 h-7 text-white" strokeWidth={2.5} />
+          ) : (
+            <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+          )}
+        </motion.div>
+
+        {/* Notification dot (only when closed) */}
+        {!isOpen && (
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 border-2 border-[#050508] flex items-center justify-center text-[10px] font-bold text-white"
+          >
+            2
+          </motion.span>
+        )}
+      </motion.button>
+    </div>
+  );
+}
+
+
+====================================================================================================
+FILE: product\PricingTable.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\product\PricingTable.tsx
+====================================================================================================
+"use client";
+
+import { useState } from "react";
+import { MessageCircle, CheckCircle } from "lucide-react";
+import { Product } from "@/types";
+import { WHATSAPP_NUMBER, WHATSAPP_MESSAGE } from "@/lib/data";
+import { motion } from "framer-motion";
+
+interface PricingTableProps {
+  product: Product;
+}
+
+export default function PricingTable({ product }: PricingTableProps) {
+  const defaultIndex = product.plans.findIndex((p) => p.popular);
+  const [selectedPlan, setSelectedPlan] = useState(defaultIndex !== -1 ? defaultIndex : 0);
+
+  return (
+    <div className="space-y-4">
+      <h3 className="text-lg font-bold text-white mb-4">Choose Your Plan</h3>
+      {product.plans.map((plan, i) => {
+        const discount = plan.originalPrice
+          ? Math.round(((plan.originalPrice - plan.price) / plan.originalPrice) * 100)
+          : 0;
+        return (
+          <motion.button
+            key={i}
+            onClick={() => setSelectedPlan(i)}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.1 }}
+            className={`w-full relative flex items-center justify-between p-5 rounded-2xl border transition-all duration-300 text-left ${
+              selectedPlan === i
+                ? "bg-indigo-500/10 border-indigo-500/40 shadow-lg shadow-indigo-500/5"
+                : "bg-white/[0.02] border-white/[0.06] hover:border-white/[0.12]"
+            }`}
+          >
+            {plan.popular && (
+              <div className="absolute -top-2.5 right-4 px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-indigo-500 text-white">
+                Best Value
+              </div>
+            )}
+            <div className="flex items-center gap-4">
+              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${selectedPlan === i ? "border-indigo-400" : "border-gray-600"}`}>
+                {selectedPlan === i && <div className="w-2.5 h-2.5 rounded-full bg-indigo-400" />}
+              </div>
+              <div>
+                <p className="font-semibold text-white text-sm">{plan.name}</p>
+                <p className="text-xs text-gray-500">{plan.duration} access</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="flex items-baseline gap-2">
+                <span className="text-xl font-bold text-white">Rs. {plan.price.toLocaleString()}</span>
+                {plan.originalPrice && (
+                  <span className="text-xs text-gray-600 line-through">Rs. {plan.originalPrice.toLocaleString()}</span>
+                )}
+              </div>
+              {discount > 0 && <span className="text-[10px] font-bold text-emerald-400 uppercase">Save {discount}%</span>}
+            </div>
+          </motion.button>
+        );
+      })}
+      <a
+        href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE(product.name, product.plans[selectedPlan].name)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group relative flex items-center justify-center gap-3 w-full py-4 mt-6 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-base shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 overflow-hidden"
+      >
+        <div className="absolute inset-0 overflow-hidden rounded-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full" style={{ animation: "shimmer 3s infinite" }} />
+        </div>
+        <MessageCircle className="relative w-5 h-5" />
+        <span className="relative">Buy Now via WhatsApp</span>
+      </a>
+      <p className="text-center text-xs text-gray-600 mt-3">
+        <CheckCircle className="inline w-3 h-3 mr-1 text-emerald-500" />
+        Instant WhatsApp delivery • Replacement guarantee
+      </p>
+    </div>
+  );
+}
+
+
+====================================================================================================
+FILE: product\ProductDetail.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\product\ProductDetail.tsx
+====================================================================================================
+"use client";
+
+import { CheckCircle, ArrowLeft, Shield, Zap, MessageCircle, RefreshCw } from "lucide-react";
+import Link from "next/link";
+import { Product } from "@/types";
+import PricingTable from "./PricingTable";
+import RelatedProducts from "./RelatedProducts";
+import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
+import ProductImage from "@/components/ui/ProductImage";
+import { motion } from "framer-motion";
+
+interface ProductDetailProps {
+  product: Product;
+}
+
+const trustBadges = [
+  { icon: Zap, title: "Instant Delivery", desc: "Within 5-30 mins" },
+  { icon: Shield, title: "100% Genuine", desc: "Authentic accounts" },
+  { icon: RefreshCw, title: "Replacement", desc: "Full plan guarantee" },
+  { icon: MessageCircle, title: "24/7 Support", desc: "WhatsApp chat" },
+];
+
+export default function ProductDetail({ product }: ProductDetailProps) {
+  return (
+    <>
+      <section className="relative min-h-screen pt-20 sm:pt-24 pb-12">
+        <div
+          className="absolute top-0 left-0 right-0 h-[500px] opacity-30 pointer-events-none"
+          style={{
+            background: `radial-gradient(ellipse at top, ${product.color}25 0%, transparent 60%)`,
+          }}
+        />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="mb-6 sm:mb-8"
+          >
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              Back to all products
+            </Link>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 sm:gap-10 lg:gap-16">
+            {/* LEFT: Product Info */}
+            <div className="lg:col-span-3">
+              <AnimateOnScroll>
+                {product.badge && (
+                  <span
+                    className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white mb-3 sm:mb-4 shadow-lg"
+                    style={{
+                      backgroundColor: product.color,
+                      boxShadow: `0 4px 15px ${product.color}40`,
+                    }}
+                  >
+                    {product.badge}
+                  </span>
+                )}
+
+                {/* Hero block */}
+                <div className="flex items-start gap-3 sm:gap-5 mb-5 sm:mb-6">
+                  <div
+                    className="flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shrink-0 p-2.5 sm:p-3 overflow-hidden"
+                    style={{
+                      background: `linear-gradient(135deg, ${product.color}30 0%, ${product.color}10 100%)`,
+                      boxShadow: `0 12px 40px ${product.color}30`,
+                      border: `1px solid ${product.color}40`,
+                    }}
+                  >
+                    <ProductImage
+                      image={product.image}
+                      alt={product.name}
+                      className="w-full h-full flex items-center justify-center"
+                      fallbackIcon={product.icon}
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span
+                      className="text-[10px] uppercase tracking-[0.2em] font-bold"
+                      style={{ color: product.color }}
+                    >
+                      {product.category}
+                    </span>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mt-1 leading-tight">
+                      {product.name}
+                    </h1>
+                    <p className="text-gray-400 mt-1.5 sm:mt-2 text-sm sm:text-base lg:text-lg">
+                      {product.tagline}
+                    </p>
+                  </div>
+                </div>
+
+                <p className="text-gray-300 leading-relaxed text-sm sm:text-base mb-6 sm:mb-8 max-w-2xl">
+                  {product.longDescription}
+                </p>
+
+                {/* Trust badges */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 mb-8 sm:mb-10">
+                  {trustBadges.map((badge, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 + i * 0.05 }}
+                      className="p-2.5 sm:p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] text-center"
+                    >
+                      <badge.icon
+                        className="w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1 sm:mb-1.5"
+                        style={{ color: product.color }}
+                      />
+                      <p className="text-[10px] sm:text-[11px] font-semibold text-white">{badge.title}</p>
+                      <p className="text-[9px] sm:text-[10px] text-gray-500">{badge.desc}</p>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Features — 2 cols on mobile */}
+                <div>
+                  <h3 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-5 flex items-center gap-2">
+                    <span
+                      className="w-1 h-5 sm:h-6 rounded-full"
+                      style={{ backgroundColor: product.color }}
+                    />
+                    What You Get
+                  </h3>
+                  <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
+                    {product.features.map((feature, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3 + i * 0.04 }}
+                        className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-xl border transition-all hover:translate-x-1"
+                        style={{
+                          backgroundColor: `${product.color}08`,
+                          borderColor: `${product.color}20`,
+                        }}
+                      >
+                        <CheckCircle
+                          className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0"
+                          style={{ color: product.color }}
+                        />
+                        <span className="text-[11px] sm:text-sm text-gray-200 leading-tight">
+                          {feature}
+                        </span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </AnimateOnScroll>
+            </div>
+
+            {/* RIGHT: Pricing */}
+            <div className="lg:col-span-2">
+              <AnimateOnScroll delay={0.2}>
+                <div
+                  className="lg:sticky lg:top-28 p-5 sm:p-6 lg:p-8 rounded-2xl border backdrop-blur-sm"
+                  style={{
+                    background: `linear-gradient(180deg, ${product.color}08 0%, rgba(255,255,255,0.02) 100%)`,
+                    borderColor: `${product.color}25`,
+                  }}
+                >
+                  <PricingTable product={product} />
+                </div>
+              </AnimateOnScroll>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <RelatedProducts currentProduct={product} />
+    </>
+  );
+}
+
+
+====================================================================================================
+FILE: product\ProductGrid.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\product\ProductGrid.tsx
+====================================================================================================
+"use client";
+
+import { useState } from "react";
+import { Search } from "lucide-react";
+import { products } from "@/lib/data";
+import ProductCard from "@/components/ui/ProductCard";
+import { motion } from "framer-motion";
+
+const categories = ["All", ...Array.from(new Set(products.map((p) => p.category)))];
+
+export default function ProductGrid() {
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filtered = products.filter((p) => {
+    const matchesCategory = activeCategory === "All" || p.category === activeCategory;
+    const matchesSearch =
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.tagline.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  return (
+    <div>
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-10">
+        <div className="relative flex-1 max-w-md">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <input
+            type="text"
+            placeholder="Search tools..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white text-sm placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 focus:bg-white/[0.05] transition-all"
+          />
+        </div>
+        <div className="flex gap-2 flex-wrap">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all duration-200 ${
+                activeCategory === cat
+                  ? "bg-indigo-500 text-white shadow-lg shadow-indigo-500/25"
+                  : "bg-white/[0.03] text-gray-400 border border-white/[0.06] hover:bg-white/[0.06] hover:text-white"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+      {filtered.length > 0 ? (
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+          {filtered.map((product, i) => (
+            <ProductCard key={product.id} product={product} index={i} />
+          ))}
+        </motion.div>
+      ) : (
+        <div className="text-center py-20">
+          <p className="text-gray-500 text-lg">No tools found matching your search.</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+====================================================================================================
+FILE: product\RelatedProducts.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\product\RelatedProducts.tsx
+====================================================================================================
+"use client";
+
+import { products } from "@/lib/data";
+import { Product } from "@/types";
+import ProductCard from "@/components/ui/ProductCard";
+import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
+
+interface RelatedProductsProps {
+  currentProduct: Product;
+}
+
+export default function RelatedProducts({ currentProduct }: RelatedProductsProps) {
+  // Get related: same category first, then others
+  const sameCategory = products.filter(
+    (p) => p.category === currentProduct.category && p.id !== currentProduct.id
+  );
+  const otherCategory = products.filter(
+    (p) => p.category !== currentProduct.category && p.id !== currentProduct.id
+  );
+  const related = [...sameCategory, ...otherCategory].slice(0, 4);
+
+  if (related.length === 0) return null;
+
+  return (
+    <section className="relative py-20 mt-10 border-t border-white/[0.04]">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AnimateOnScroll className="text-center mb-12">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-purple-500/10 text-purple-400 border border-purple-500/20 mb-4">
+            More Options
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
+            You Might Also{" "}
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Like These
+            </span>
+          </h2>
+          <p className="text-gray-400 text-base max-w-xl mx-auto">
+            Explore other premium AI tools that pair perfectly with {currentProduct.shortName}.
+          </p>
+        </AnimateOnScroll>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 items-stretch">
+          {related.map((product, i) => (
+            <ProductCard key={product.id} product={product} index={i} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+====================================================================================================
+FILE: sections\About.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\sections\About.tsx
+====================================================================================================
+"use client";
+
+import { CheckCircle, MessageCircle, Package, Globe } from "lucide-react";
+import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
+import SectionHeading from "@/components/ui/SectionHeading";
+import GlowCard from "@/components/ui/GlowCard";
+
+const features = [
+  {
+    icon: MessageCircle,
+    title: "WhatsApp-First",
+    description: "No complicated checkout. Just message us, pay, and get your credentials instantly. It is that simple.",
+    color: "#25D366",
+  },
+  {
+    icon: Package,
+    title: "Instant Delivery",
+    description: "Most orders are delivered within 5-30 minutes. No waiting around, no delays. We value your time.",
+    color: "#6366f1",
+  },
+  {
+    icon: CheckCircle,
+    title: "Replacement Guarantee",
+    description: "If anything goes wrong during your subscription period, we replace it immediately. Zero hassle.",
+    color: "#f59e0b",
+  },
+  {
+    icon: Globe,
+    title: "Trusted Nationwide",
+    description: "5,000+ customers across Pakistan trust us for their premium AI tool subscriptions. Join them today.",
+    color: "#ec4899",
+  },
+];
+
+export default function About() {
+  return (
+    <section id="about" className="relative py-16 sm:py-24 lg:py-32">
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          badge="Why Us"
+          title="Why People Choose"
+          highlight="ToolsTemplate"
+          subtitle="We are not just another reseller. We are building the most trusted platform for premium AI tools in Pakistan."
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {features.map((feature, i) => (
+            <AnimateOnScroll key={i} delay={i * 0.1}>
+              <GlowCard className="h-full" glowColor={`${feature.color}20`}>
+                <div className="p-5 sm:p-6 lg:p-8">
+                  <div
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-4 sm:mb-5"
+                    style={{ backgroundColor: `${feature.color}15` }}
+                  >
+                    <feature.icon className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: feature.color }} />
+                  </div>
+                  <h3 className="text-base sm:text-lg font-bold text-white mb-2">{feature.title}</h3>
+                  <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">{feature.description}</p>
+                </div>
+              </GlowCard>
+            </AnimateOnScroll>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+====================================================================================================
+FILE: sections\Contact.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\sections\Contact.tsx
+====================================================================================================
+"use client";
+
+import { MessageCircle, ArrowRight, Phone, Mail, MapPin } from "lucide-react";
+import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
+import { WHATSAPP_NUMBER, SITE_CONFIG } from "@/lib/data";
+
+export default function Contact() {
+  return (
+    <section id="contact" className="relative py-16 sm:py-24 lg:py-32">
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-indigo-600/5 rounded-full blur-[180px]" />
+      </div>
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AnimateOnScroll>
+          <div className="relative rounded-3xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-transparent p-6 sm:p-10 lg:p-16 text-center overflow-hidden">
+            <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-indigo-500/10 to-transparent rounded-br-full" />
+            <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-purple-500/10 to-transparent rounded-tl-full" />
+            <div className="relative">
+              <span className="inline-block px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-semibold tracking-wider uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4 sm:mb-6">
+                Get Started
+              </span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-3 sm:mb-4">
+                Ready to{" "}
+                <span className="bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">Level Up?</span>
+              </h2>
+              <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-xl mx-auto mb-8 sm:mb-10 leading-relaxed">
+                Message us on WhatsApp and get your premium AI tools within minutes. No signup forms, no waiting.
+              </p>
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hey! I want to order premium AI tools from ToolsTemplate!")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3.5 sm:py-5 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-sm sm:text-base lg:text-lg shadow-2xl shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 overflow-hidden mb-8 sm:mb-10"
+              >
+                <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full" style={{ animation: "shimmer 3s infinite" }} />
+                </div>
+                <MessageCircle className="relative w-5 h-5 sm:w-6 sm:h-6" />
+                <span className="relative">Order on WhatsApp</span>
+                <ArrowRight className="relative w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+              </a>
+              <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-500">
+                <div className="flex items-center gap-2"><Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400" />{SITE_CONFIG.phone}</div>
+                <div className="flex items-center gap-2"><Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400" />{SITE_CONFIG.email}</div>
+                <div className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400" />{SITE_CONFIG.address}</div>
+              </div>
+            </div>
+          </div>
+        </AnimateOnScroll>
+      </div>
+    </section>
+  );
+}
+
+
+====================================================================================================
+FILE: sections\FAQ.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\sections\FAQ.tsx
+====================================================================================================
+"use client";
+
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { faqs } from "@/lib/data";
+import SectionHeading from "@/components/ui/SectionHeading";
+import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
+
+export default function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  return (
+    <section id="faq" className="relative py-16 sm:py-24 lg:py-32">
+      <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-indigo-600/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          badge="FAQ"
+          title="Got"
+          highlight="Questions?"
+          subtitle="Everything you need to know about our services. Cannot find what you are looking for? Message us on WhatsApp."
+        />
+        <div className="space-y-2.5 sm:space-y-3">
+          {faqs.map((faq, i) => (
+            <AnimateOnScroll key={i} delay={i * 0.05}>
+              <div
+                className={`rounded-2xl border transition-all duration-300 ${
+                  openIndex === i
+                    ? "bg-white/[0.03] border-indigo-500/20"
+                    : "bg-white/[0.01] border-white/[0.06] hover:border-white/[0.1]"
+                }`}
+              >
+                <button
+                  onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                  className="w-full flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 text-left"
+                >
+                  <span className={`text-sm sm:text-base font-medium pr-3 sm:pr-4 transition-colors ${openIndex === i ? "text-white" : "text-gray-300"}`}>
+                    {faq.question}
+                  </span>
+                  <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 shrink-0 text-gray-500 transition-transform duration-300 ${openIndex === i ? "rotate-180 text-indigo-400" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {openIndex === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="px-4 sm:px-6 pb-4 sm:pb-5 text-xs sm:text-sm text-gray-400 leading-relaxed">{faq.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </AnimateOnScroll>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+====================================================================================================
+FILE: sections\FeaturedProducts.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\sections\FeaturedProducts.tsx
+====================================================================================================
+"use client";
+
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { products, featuredProductSlugs } from "@/lib/data";
+import ProductCard from "@/components/ui/ProductCard";
+import SectionHeading from "@/components/ui/SectionHeading";
+import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
+
+export default function FeaturedProducts() {
+  const featured = featuredProductSlugs
+    .map((slug) => products.find((p) => p.slug === slug))
+    .filter(Boolean);
+
+  return (
+    <section id="products" className="relative py-16 sm:py-24 lg:py-32">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          title="Our Most Popular"
+          highlight="Tools"
+          subtitle="Hand-picked premium AI tools that our customers love the most. Instant delivery, unbeatable prices."
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 items-stretch">
+          {featured.map((product, i) =>
+            product ? <ProductCard key={product.id} product={product} index={i} /> : null
+          )}
+        </div>
+        <AnimateOnScroll delay={0.4} className="text-center mt-10 sm:mt-12">
+          <Link
+            href="/products"
+            className="group inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white font-medium text-sm sm:text-base hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-200"
+          >
+            View All Products
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </AnimateOnScroll>
+      </div>
+    </section>
+  );
+}
+
+
+====================================================================================================
+FILE: sections\Hero.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\sections\Hero.tsx
+====================================================================================================
+"use client";
+
+import Link from "next/link";
+import { ArrowRight, MessageCircle, Users, Zap, Clock, HeadphonesIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import { WHATSAPP_NUMBER } from "@/lib/data";
+
+const heroStats = [
+  {
+    value: "5,000+",
+    label: "Happy Customers",
+    icon: Users,
+    color: "#6366f1",
+    gradient: "from-indigo-500 to-purple-500",
+  },
+  {
+    value: "99.9%",
+    label: "Uptime Guarantee",
+    icon: Zap,
+    color: "#10b981",
+    gradient: "from-emerald-500 to-green-500",
+  },
+  {
+    value: "< 30min",
+    label: "Delivery Time",
+    icon: Clock,
+    color: "#f59e0b",
+    gradient: "from-amber-500 to-orange-500",
+  },
+  {
+    value: "24/7",
+    label: "WhatsApp Support",
+    icon: HeadphonesIcon,
+    color: "#ec4899",
+    gradient: "from-pink-500 to-rose-500",
+  },
+];
+
+export default function Hero() {
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 -left-20 w-80 sm:w-96 h-80 sm:h-96 bg-indigo-600/20 rounded-full blur-[120px]" style={{ animation: "blob 7s infinite" }} />
+        <div className="absolute top-1/3 -right-20 w-80 sm:w-96 h-80 sm:h-96 bg-purple-600/20 rounded-full blur-[120px]" style={{ animation: "blob 7s infinite 2s" }} />
+        <div className="absolute -bottom-20 left-1/3 w-80 sm:w-96 h-80 sm:h-96 bg-emerald-600/10 rounded-full blur-[120px]" style={{ animation: "blob 7s infinite 4s" }} />
+      </div>
+
+      <div
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 sm:pb-16 w-full">
+        <div className="text-center max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 backdrop-blur-sm mb-6 sm:mb-8">
+              <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-emerald-400 animate-pulse" />
+              Trusted by 5,000+ customers across Pakistan
+            </span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] mb-4 sm:mb-6"
+          >
+            <span className="text-white">Premium AI Tools</span>
+            <br />
+            <span
+              className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+              style={{ backgroundSize: "200% 200%", animation: "gradient-shift 3s ease infinite" }}
+            >
+              Pocket-Friendly Prices
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2"
+          >
+            Get instant access to{" "}
+            <span className="text-white font-medium">ChatGPT Pro</span>,{" "}
+            <span className="text-white font-medium">Gemini Advanced</span>,{" "}
+            <span className="text-white font-medium">Canva Pro</span> and more delivered to your WhatsApp in minutes.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-12 sm:mb-16 px-4 sm:px-0"
+          >
+            <Link
+              href="/products"
+              className="group relative inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold text-sm sm:text-base shadow-xl shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 overflow-hidden"
+            >
+              <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full" style={{ animation: "shimmer 3s infinite" }} />
+              </div>
+              <span className="relative">Browse All Tools</span>
+              <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hey! I want to buy premium AI tools. What is available?")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-white/[0.04] border border-white/[0.08] text-white font-semibold text-sm sm:text-base hover:bg-white/[0.08] hover:border-white/[0.15] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 backdrop-blur-sm"
+            >
+              <MessageCircle className="w-4 h-4 text-emerald-400" />
+              Order on WhatsApp
+            </a>
+          </motion.div>
+
+          {/* COLORED STATS */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto"
+          >
+            {heroStats.map((stat, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.05, y: -4 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="relative p-3 sm:p-4 rounded-2xl border backdrop-blur-sm overflow-hidden group"
+                style={{
+                  background: `linear-gradient(145deg, ${stat.color}15 0%, rgba(255,255,255,0.02) 100%)`,
+                  borderColor: `${stat.color}30`,
+                }}
+              >
+                {/* Glow on hover */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: `radial-gradient(circle at 50% 0%, ${stat.color}25 0%, transparent 70%)`,
+                  }}
+                />
+
+                {/* Top accent line */}
+                <div
+                  className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-0.5 rounded-full"
+                  style={{ backgroundColor: stat.color }}
+                />
+
+                {/* Icon */}
+                <div
+                  className="relative w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 sm:mb-2.5 rounded-xl flex items-center justify-center"
+                  style={{
+                    background: `linear-gradient(135deg, ${stat.color}30 0%, ${stat.color}10 100%)`,
+                    border: `1px solid ${stat.color}40`,
+                  }}
+                >
+                  <stat.icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: stat.color }} />
+                </div>
+
+                {/* Value */}
+                <div
+                  className="relative text-lg sm:text-2xl md:text-3xl font-bold mb-0.5 sm:mb-1"
+                  style={{ color: stat.color }}
+                >
+                  {stat.value}
+                </div>
+
+                {/* Label */}
+                <div className="relative text-[9px] sm:text-[10px] md:text-xs text-gray-400 font-semibold uppercase tracking-wider">
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#050508] to-transparent pointer-events-none" />
+    </section>
+  );
+}
+
+
+====================================================================================================
+FILE: sections\Reviews.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\sections\Reviews.tsx
+====================================================================================================
+"use client";
+
+import { Star } from "lucide-react";
+import { reviews } from "@/lib/data";
+import SectionHeading from "@/components/ui/SectionHeading";
+import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
+import GlowCard from "@/components/ui/GlowCard";
+
+export default function Reviews() {
+  return (
+    <section id="reviews" className="relative py-16 sm:py-24 lg:py-32">
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-600/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          badge="Testimonials"
+          title="Loved by"
+          highlight="Thousands"
+          subtitle="Do not just take our word for it. Here is what our customers have to say about their experience."
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {reviews.map((review, i) => (
+            <AnimateOnScroll key={review.id} delay={i * 0.08}>
+              <GlowCard className="h-full" glowColor="rgba(234, 179, 8, 0.1)">
+                <div className="p-5 sm:p-6 lg:p-8">
+                  <div className="flex gap-1 mb-3 sm:mb-4">
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <Star key={j} className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${j < review.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-700"}`} />
+                    ))}
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-300 leading-relaxed mb-5 sm:mb-6">&ldquo;{review.comment}&rdquo;</p>
+                  <div className="flex items-center gap-3 pt-3 sm:pt-4 border-t border-white/[0.06]">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-[10px] sm:text-xs font-bold">
+                      {review.avatar}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs sm:text-sm font-semibold text-white truncate">{review.name}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 truncate">{review.product} • {review.date}</p>
+                    </div>
+                  </div>
+                </div>
+              </GlowCard>
+            </AnimateOnScroll>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+====================================================================================================
+FILE: ui\AnimateOnScroll.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\ui\AnimateOnScroll.tsx
+====================================================================================================
+"use client";
+
+import { motion } from "framer-motion";
+import { ReactNode } from "react";
+
+interface AnimateOnScrollProps {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  direction?: "up" | "down" | "left" | "right" | "none";
+}
+
+export default function AnimateOnScroll({
+  children,
+  className = "",
+  delay = 0,
+  direction = "up",
+}: AnimateOnScrollProps) {
+  const directions = {
+    up: { y: 40, x: 0 },
+    down: { y: -40, x: 0 },
+    left: { y: 0, x: 40 },
+    right: { y: 0, x: -40 },
+    none: { y: 0, x: 0 },
+  };
+
+  return (
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: directions[direction].y,
+        x: directions[direction].x,
+      }}
+      whileInView={{ opacity: 1, y: 0, x: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+
+====================================================================================================
+FILE: ui\GlowCard.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\ui\GlowCard.tsx
+====================================================================================================
+"use client";
+
+import { ReactNode, useRef, useState } from "react";
+
+interface GlowCardProps {
+  children: ReactNode;
+  className?: string;
+  glowColor?: string;
+}
+
+export default function GlowCard({
+  children,
+  className = "",
+  glowColor = "rgba(99, 102, 241, 0.15)",
+}: GlowCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm transition-all duration-300 hover:border-white/[0.15] ${className}`}
+    >
+      {isHovered && (
+        <div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-100 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, ${glowColor}, transparent 40%)`,
+          }}
+        />
+      )}
+      <div className="relative z-10">{children}</div>
+    </div>
+  );
+}
+
+
+====================================================================================================
+FILE: ui\Logo.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\ui\Logo.tsx
+====================================================================================================
+"use client";
+
+interface LogoProps {
+  size?: number;
+  showText?: boolean;
+}
+
+export default function Logo({ size = 36, showText = true }: LogoProps) {
+  return (
+    <div className="flex items-center gap-2.5 group">
+      {/* Animated SVG Logo */}
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="transition-transform duration-500 group-hover:rotate-12"
+        >
+          {/* Outer rotating ring */}
+          <defs>
+            <linearGradient id="logoGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#818cf8" />
+              <stop offset="50%" stopColor="#a78bfa" />
+              <stop offset="100%" stopColor="#ec4899" />
+            </linearGradient>
+            <linearGradient id="logoGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#6366f1" />
+              <stop offset="100%" stopColor="#8b5cf6" />
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          {/* Background hex shape */}
+          <path
+            d="M20 2 L34 10 L34 30 L20 38 L6 30 L6 10 Z"
+            fill="url(#logoGrad2)"
+            filter="url(#glow)"
+          />
+
+          {/* Inner accent ring */}
+          <path
+            d="M20 6 L30 12 L30 28 L20 34 L10 28 L10 12 Z"
+            fill="none"
+            stroke="url(#logoGrad1)"
+            strokeWidth="0.8"
+            opacity="0.6"
+          />
+
+          {/* Center "T" stylized */}
+          <g transform="translate(20, 20)">
+            <rect x="-7" y="-7" width="14" height="3" rx="1.2" fill="white" />
+            <rect x="-1.5" y="-7" width="3" height="14" rx="1.2" fill="white" />
+            {/* Small accent dot */}
+            <circle cx="5" cy="5" r="1.5" fill="#fbbf24">
+              <animate
+                attributeName="opacity"
+                values="0.4;1;0.4"
+                dur="2s"
+                repeatCount="indefinite"
+              />
+            </circle>
+          </g>
+        </svg>
+
+        {/* Pulse glow ring */}
+        <div className="absolute inset-0 rounded-full bg-indigo-500/20 blur-md group-hover:bg-indigo-500/40 transition-all duration-500" />
+      </div>
+
+      {/* Brand Text */}
+      {showText && (
+        <div className="flex flex-col leading-tight">
+          <span className="text-base sm:text-lg font-bold tracking-tight">
+            <span className="text-white">Tools</span>
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Template
+            </span>
+          </span>
+          <span className="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-medium hidden sm:block">
+            Premium AI Tools
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+====================================================================================================
+FILE: ui\ProductCard.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\ui\ProductCard.tsx
+====================================================================================================
+"use client";
+
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { Product } from "@/types";
+import { motion } from "framer-motion";
+import ProductImage from "./ProductImage";
+
+interface ProductCardProps {
+  product: Product;
+  index: number;
+}
+
+export default function ProductCard({ product, index }: ProductCardProps) {
+  const lowestPlan = product.plans.reduce(
+    (min, p) => (p.price < min.price ? p : min),
+    product.plans[0]
+  );
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="h-full group"
+    >
+      <Link href={`/products/${product.slug}`} className="block h-full">
+        <div
+          className="relative h-full rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1"
+          style={{
+            background: `linear-gradient(145deg, ${product.color}15 0%, rgba(255,255,255,0.02) 50%)`,
+            border: `1px solid ${product.color}25`,
+          }}
+        >
+          {/* Animated colored glow on hover */}
+          <div
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            style={{
+              background: `radial-gradient(circle at 50% 0%, ${product.color}25 0%, transparent 60%)`,
+            }}
+          />
+
+          {/* Top accent stripe */}
+          <div
+            className="absolute top-0 left-0 right-0 h-1 opacity-80"
+            style={{
+              background: `linear-gradient(90deg, transparent, ${product.color}, transparent)`,
+            }}
+          />
+
+          {/* Content */}
+          <div className="relative p-6 flex flex-col h-full">
+            {/* Badge slot — reserved 28px */}
+            <div className="h-7 mb-3 flex items-start">
+              {product.badge && (
+                <span
+                  className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-lg"
+                  style={{
+                    backgroundColor: product.color,
+                    boxShadow: `0 4px 15px ${product.color}40`,
+                  }}
+                >
+                  {product.badge}
+                </span>
+              )}
+            </div>
+
+            {/* Image + Title block */}
+            <div className="flex items-start gap-3.5 mb-4 h-[72px]">
+              <div
+                className="flex items-center justify-center w-14 h-14 rounded-2xl shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 p-2.5 overflow-hidden"
+                style={{
+                  background: `linear-gradient(135deg, ${product.color}30 0%, ${product.color}10 100%)`,
+                  boxShadow: `0 8px 24px ${product.color}25, inset 0 1px 0 ${product.color}40`,
+                  border: `1px solid ${product.color}30`,
+                }}
+              >
+                <ProductImage
+                  image={product.image}
+                  alt={product.name}
+                  className="w-full h-full flex items-center justify-center"
+                  fallbackIcon={product.icon}
+                />
+              </div>
+              <div className="min-w-0 flex-1 pt-0.5">
+                <span
+                  className="text-[9px] uppercase tracking-[0.15em] font-bold block mb-1"
+                  style={{ color: product.color }}
+                >
+                  {product.category}
+                </span>
+                <h3 className="text-base sm:text-lg font-bold text-white leading-tight line-clamp-2">
+                  {product.name}
+                </h3>
+              </div>
+            </div>
+
+            {/* Tagline — fixed height */}
+            <p className="text-gray-400 text-sm leading-snug mb-4 h-[40px] line-clamp-2">
+              {product.tagline}
+            </p>
+
+            {/* Features chips — fixed height */}
+            <div className="flex flex-wrap gap-1.5 mb-5 h-[60px] content-start overflow-hidden">
+              {product.features.slice(0, 3).map((feature, i) => (
+                <span
+                  key={i}
+                  className="px-2.5 py-1 rounded-md text-[10px] font-medium border"
+                  style={{
+                    backgroundColor: `${product.color}10`,
+                    borderColor: `${product.color}20`,
+                    color: "#d1d5db",
+                  }}
+                >
+                  {feature}
+                </span>
+              ))}
+              {product.features.length > 3 && (
+                <span className="px-2.5 py-1 rounded-md text-[10px] font-medium text-gray-500">
+                  +{product.features.length - 3} more
+                </span>
+              )}
+            </div>
+
+            <div className="flex-grow" />
+
+            {/* Price + CTA */}
+            <div
+              className="flex items-end justify-between pt-4 border-t mt-auto"
+              style={{ borderColor: `${product.color}20` }}
+            >
+              <div className="min-w-0">
+                <span className="text-[9px] text-gray-500 uppercase tracking-wider block mb-0.5 font-semibold">
+                  Starting from
+                </span>
+                <div className="flex items-baseline gap-1.5 flex-wrap">
+                  <span className="text-xl font-bold" style={{ color: product.color }}>
+                    Rs. {lowestPlan.price.toLocaleString()}
+                  </span>
+                  {lowestPlan.originalPrice && (
+                    <span className="text-xs text-gray-600 line-through">
+                      Rs. {lowestPlan.originalPrice.toLocaleString()}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div
+                className="flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 group-hover:scale-110 shrink-0 ml-2"
+                style={{
+                  background: `linear-gradient(135deg, ${product.color}, ${product.color}cc)`,
+                  boxShadow: `0 4px 14px ${product.color}50`,
+                }}
+              >
+                <ArrowRight className="w-4 h-4 text-white transition-transform duration-300 group-hover:translate-x-0.5" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+
+====================================================================================================
+FILE: ui\ProductImage.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\ui\ProductImage.tsx
+====================================================================================================
+"use client";
+
+import { useState } from "react";
+
+interface ProductImageProps {
+  image: string;        // filename without extension (e.g., "chatgpt")
+  alt: string;
+  className?: string;
+  fallbackIcon?: string; // emoji to show if both images fail
+}
+
+export default function ProductImage({
+  image,
+  alt,
+  className = "",
+  fallbackIcon,
+}: ProductImageProps) {
+  const [errored, setErrored] = useState(false);
+
+  // If both formats fail, show emoji
+  if (errored && fallbackIcon) {
+    return (
+      <div className={`flex items-center justify-center text-3xl ${className}`}>
+        {fallbackIcon}
+      </div>
+    );
+  }
+
+  return (
+    <picture className={className}>
+      {/* Try AVIF first */}
+      <source srcSet={`/images/products/${image}.avif`} type="image/avif" />
+      {/* Then PNG */}
+      <source srcSet={`/images/products/${image}.png`} type="image/png" />
+      {/* img tag is the actual element + final fallback */}
+      <img
+        src={`/images/products/${image}.png`}
+        alt={alt}
+        onError={() => setErrored(true)}
+        className="w-full h-full object-contain"
+        loading="lazy"
+      />
+    </picture>
+  );
+}
+
+
+====================================================================================================
+FILE: ui\SectionHeading.tsx
+FULL PATH: D:\Web Development\Websites\Clients\toolstemplate\src\components\ui\SectionHeading.tsx
+====================================================================================================
+"use client";
+
+import AnimateOnScroll from "./AnimateOnScroll";
+
+interface SectionHeadingProps {
+  badge?: string;
+  title: string;
+  highlight?: string;
+  subtitle: string;
+}
+
+export default function SectionHeading({
+  badge,
+  title,
+  highlight,
+  subtitle,
+}: SectionHeadingProps) {
+  return (
+    <AnimateOnScroll className="text-center mb-16">
+      {badge && (
+        <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
+          {badge}
+        </span>
+      )}
+      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+        {title}{" "}
+        {highlight && (
+          <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            {highlight}
+          </span>
+        )}
+      </h2>
+      <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
+        {subtitle}
+      </p>
+    </AnimateOnScroll>
+  );
+}
+
+

@@ -1,0 +1,51 @@
+$projectRoot = "D:\Web Development\Websites\Clients\toolstemplate"
+$srcRoot = Join-Path $projectRoot "src"
+$outputFolder = Join-Path $projectRoot "Scriptextract"
+
+# Folders to extract
+$folders = @("app", "components", "lib", "types")
+
+# Create output folder
+New-Item -ItemType Directory -Path $outputFolder -Force | Out-Null
+
+foreach ($folder in $folders) {
+    $sourcePath = Join-Path $srcRoot $folder
+    $outputFile = Join-Path $outputFolder "$folder.txt"
+
+    if (-not (Test-Path $sourcePath)) {
+        Write-Host "Folder not found: $sourcePath" -ForegroundColor Yellow
+        continue
+    }
+
+    # Clear/create output file
+    Set-Content -Path $outputFile -Value "" -Encoding UTF8
+
+    # Get all files recursively
+    $files = Get-ChildItem -Path $sourcePath -File -Recurse
+
+    foreach ($file in $files) {
+        $relativePath = $file.FullName.Substring($sourcePath.Length).TrimStart("\")
+
+        Add-Content -Path $outputFile -Value ("=" * 100)
+        Add-Content -Path $outputFile -Value ("FILE: $relativePath")
+        Add-Content -Path $outputFile -Value ("FULL PATH: " + $file.FullName)
+        Add-Content -Path $outputFile -Value ("=" * 100)
+
+        try {
+            $content = Get-Content -Path $file.FullName -Raw -ErrorAction Stop
+            Add-Content -Path $outputFile -Value $content
+        }
+        catch {
+            Add-Content -Path $outputFile -Value "[Could not read file: $($file.FullName)]"
+        }
+
+        Add-Content -Path $outputFile -Value "`r`n"
+    }
+
+    Write-Host "Created: $outputFile" -ForegroundColor Green
+}
+
+Write-Host "`nDone. Extracted files are in: $outputFolder" -ForegroundColor Cyan
+
+
+ for codes... write me a powershell code that will automatically create files and folders and write, edit or replace their content when i run that code in vs code terminal - Do this for our project next

@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ToolsTemple — Premium AI Tools at Unbeatable Prices",
+  title: "ZNK Tools — Premium AI Tools at Unbeatable Prices",
   description:
     "Get instant access to ChatGPT Pro, Gemini Pro, Canva Pro & more premium AI tools at the lowest prices in Pakistan. Instant WhatsApp delivery.",
   keywords: [

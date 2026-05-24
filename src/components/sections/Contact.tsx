@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { MessageCircle, ArrowRight, Phone, Mail, MapPin } from "lucide-react";
 import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
@@ -27,7 +27,7 @@ export default function Contact() {
                 Message us on WhatsApp and get your premium AI tools within minutes. No signup forms, no waiting.
               </p>
               <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hey! I want to order premium AI tools from ToolsTemplate!")}`}
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hey! I want to order premium AI tools from ZNK Tools!")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3.5 sm:py-5 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-sm sm:text-base lg:text-lg shadow-2xl shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 overflow-hidden mb-8 sm:mb-10"

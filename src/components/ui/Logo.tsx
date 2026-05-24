@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 interface LogoProps {
   size?: number;
@@ -78,9 +78,9 @@ export default function Logo({ size = 36, showText = true }: LogoProps) {
       {showText && (
         <div className="flex flex-col leading-tight">
           <span className="text-base sm:text-lg font-bold tracking-tight">
-            <span className="text-white">Tools</span>
+            <span className="text-white">ZNK</span>
             <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Template
+              Tools
             </span>
           </span>
           <span className="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-medium hidden sm:block">
