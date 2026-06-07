@@ -14,7 +14,7 @@ const heroStats = [
     gradient: "from-indigo-500 to-purple-500",
   },
   {
-    value: "99.9%",
+    value: "10.9%",
     label: "Uptime Guarantee",
     icon: Zap,
     color: "#10b981",
