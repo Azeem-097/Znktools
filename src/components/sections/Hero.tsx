@@ -7,8 +7,8 @@ import { WHATSAPP_NUMBER } from "@/lib/data";
 
 const heroStats = [
   {
-    value: "5,000+",
-    label: "Happy Customers",
+    value: "10,000+",
+    label: "Customers",
     icon: Users,
     color: "#6366f1",
     gradient: "from-indigo-500 to-purple-500",
@@ -58,7 +58,7 @@ export default function Hero() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 backdrop-blur-sm mb-6 sm:mb-8">
               <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-emerald-400 animate-pulse" />
-              Trusted by 5,000+ customers across Pakistan
+              Trusted by 10,000+ customers across Pakistan
             </span>
           </motion.div>
 
