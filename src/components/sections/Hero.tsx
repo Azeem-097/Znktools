@@ -7,8 +7,8 @@ import { WHATSAPP_NUMBER } from "@/lib/data";
 
 const heroStats = [
   {
-    value: "5,675765+",
-    label: "Happy Customers",
+    value: "5,000+",
+    label: "Happy",
     icon: Users,
     color: "#6366f1",
     gradient: "from-indigo-500 to-purple-500",
